@@ -39,18 +39,28 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    ///[FIX BUG#Static interface methods are only supported starting with Android N (--min-api 24): okhttp3.Request okhttp3.Authenticator.lambda$static$0(okhttp3.Route, okhttp3.Response)]
+    ///https://github.com/square/okhttp/issues/4597
+    android {
+        compileOptions {
+            sourceCompatibility 1.8
+            targetCompatibility 1.8
+        }
+    }
 }
 
 dependencies {
     implementation "androidx.appcompat:appcompat:${versions.androidXVersion}"
-    implementation "androidx.recyclerview:recyclerview:${versions.androidXVersion}"
-    implementation "androidx.cardview:cardview:${versions.androidXVersion}"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.cardview:cardview:1.0.0"
 
     implementation project(':library')
 
     //used to generate the drawer on the left
     //https://github.com/mikepenz/MaterialDrawer
     implementation('com.mikepenz:materialdrawer:6.1.2') {
+//    implementation('com.mikepenz:materialdrawer:8.3.3') { ///Kotlin
         transitive = true
         exclude group: 'com.android.support'
         exclude group: 'com.mikepenz', module: 'materialize'
@@ -58,7 +68,8 @@ dependencies {
 
     // used to generate the Open Source section
     // https://github.com/mikepenz/AboutLibraries
-    implementation('com.mikepenz:aboutlibraries:6.2.1') {
+    implementation('com.mikepenz:aboutlibraries:6.2.3') {
+//    implementation('com.mikepenz:aboutlibraries:8.8.2') { ///Kotlin
         transitive = true
         exclude group: 'com.android.support'
     }

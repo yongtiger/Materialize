@@ -11,7 +11,7 @@ import com.mikepenz.aboutlibraries.LibsConfiguration;
  */
 public class CustomApplication extends Application {
     static {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
     }
 
     @Override
