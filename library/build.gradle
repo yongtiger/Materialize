@@ -1,4 +1,22 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+
+    ///[FIX#jitpack#jcenter废弃#Please remove usages of `jcenter()` Maven repository from your build scripts and migrate your build to other Maven repositories.]
+    id 'maven-publish'
+}
+
+///[FIX#jitpack#jcenter废弃#Please remove usages of `jcenter()` Maven repository from your build scripts and migrate your build to other Maven repositories.]
+///https://www.shangmayuan.com/a/12c08d0e68c3421cb2d547ee.html
+///https://stackoverflow.com/questions/67599438/gradle-7-and-jitpack-io-runs-into-error-during-publish
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+            }
+        }
+    }
+}
 
 android {
     compileSdkVersion setup.compileSdk
@@ -9,34 +27,23 @@ android {
         targetSdkVersion setup.targetSdk
         versionCode release.versionCode
         versionName release.versionName
-
-        resValue "string", "materialize_lib_version", "${versionName}"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-    productFlavors {
-    }
-    lintOptions {
-        abortOnError false
-    }
 
-    ///[FIX BUG#Static interface methods are only supported starting with Android N (--min-api 24): okhttp3.Request okhttp3.Authenticator.lambda$static$0(okhttp3.Route, okhttp3.Response)]
-    ///https://github.com/square/okhttp/issues/4597
-    android {
-        compileOptions {
-            sourceCompatibility 1.8
-            targetCompatibility 1.8
-        }
+    compileOptions {
+        ///[FIX#Jitpack#需要Java 11]在项目根目录添加文件jitpack.yml（jdk: - openjdk11）
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:${versions.androidXVersion}"
-    implementation "com.google.android.material:material:${versions.materialVersion}"
+    implementation "androidx.appcompat:appcompat:1.3.1"
+    implementation "com.google.android.material:material:1.4.0"
 }
-
-apply from: '../gradle-release.gradle'
